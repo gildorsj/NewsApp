@@ -12,11 +12,14 @@ import {
 import AsyncStorage from '@react-native-community/async-storage'
 import News from '../components/News'
 import AddNews from './AddNews'
+import ViewerNews from './ViewerNews'
 
 
 const initialState = {
+  payload: [],
   news: [],
   addNewsModal: false,
+  viewerNewsModal: false,
 }
 
 class NewsList extends Component {
@@ -30,10 +33,15 @@ class NewsList extends Component {
     const state = JSON.parse(stateString) || initialState
     this.setState(state)
   }
+
   saveOnStorage = () => {
     AsyncStorage.setItem('newsState', JSON.stringify(this.state))
   }
   
+  openNews = payload => {
+    this.setState({ payload,  viewerNewsModal: true })
+  }
+
   addNews = newNews => {
     if (!newNews.author || !newNews.author.trim()) {
       Alert.alert('Autor vazio', 'Informe o autor!')
@@ -57,12 +65,18 @@ class NewsList extends Component {
     this.setState({ news, addNewsModal: false, }, this.saveOnStorage)
   }
 
+  delNews = id => {
+    const news = this.state.news.filter(news => news.id !== id)
+    this.setState({ news }, this.saveOnStorage)
+  }
+
 
 
   render() {
     return (
       <View style={styles.container}>
         <AddNews isVisible={this.state.addNewsModal} onCancel={() => this.setState({ addNewsModal: false })} onSave={this.addNews} />
+        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onCancel={() => this.setState({ viewerNewsModal: false })}/>
         <View style={styles.header}>
           <View style={styles.headerBar}>
             <Text style={{ color: 'white', fontSize: 20 }}>NewsApp</Text>
@@ -75,7 +89,7 @@ class NewsList extends Component {
         <View style={styles.boby}>
           <FlatList data={this.state.news}
             keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => <News {...item} onLongPress={()=> Alert.alert(item.title,'Clique longo')} onPress={()=>Alert.alert(item.title,'Clique curto')}/>} />
+            renderItem={({ item }) => <News {...item} onLongPress={()=> {Alert.alert('Notícia excluída', item.title);this.delNews(item.id)}} onPress={ () => this.openNews(item) }/>} />
         </View>
       </View>
     )

@@ -14,22 +14,22 @@ const initialState = {
   notice: '',
 }
 
-class AddNews extends Component {
+class ViewerNews extends Component {
 
   state = {
     ...initialState
   }
 
-
-  save = () => {
-    const newNews = {
-      author: this.state.author,
-      title: this.state.title,
-      notice: this.state.notice,
-    }
-    this.props.onSave && this.props.onSave(newNews)
-    this.setState({ ...initialState })
-  }
+componentDidMount = () => {
+  this.setState ({
+    author: this.props.payload.author,
+    title: this.props.payload.title,
+    notice: this.props.payload.notice,
+  })
+}
+componentWillUnmount = () =>{
+  this.setState ({state: initialState})
+}
 
   render() {
     return (
@@ -42,19 +42,21 @@ class AddNews extends Component {
         <View style={styles.modalConteiner}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={this.props.onCancel}>
-              <Text style={{color:'#FFF'}}>Cancelar</Text>
+              <Text style={{color:'#FFF'}}>Voltar</Text>
             </TouchableOpacity>
-            <Text style={{color:'#FFF'}}>Nova notícia</Text>
+            <Text style={{color:'#FFF'}}>{this.state.title}</Text>
             <TouchableOpacity onPress={this.save}>
-              <Text style={{color:'#FFF'}}> Salvar</Text>
+              <Text style={{color:'#FFF'}}>  </Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalBody}>
-            <TextInput style={{
-              paddingBottom: 0,
-              color: '#FFF',
-            }}
+            <TextInput 
+              style={{
+                paddingBottom: 0,
+                color: '#FFF',
+              }}
+              editable={false}
               placeholder="Autor"
               placeholderTextColor={'#5e5f63'}
               onChangeText={author => this.setState({ author })}
@@ -106,4 +108,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default AddNews
+export default ViewerNews
