@@ -6,6 +6,7 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from 'react-native'
 
 const initialState = {
@@ -20,20 +21,18 @@ class ViewerNews extends Component {
     ...initialState
   }
 
-componentDidMount = () => {
-  this.setState ({
-    author: this.props.payload.author,
-    title: this.props.payload.title,
-    notice: this.props.payload.notice,
-  })
-}
-componentWillUnmount = () =>{
-  this.setState ({state: initialState})
-}
+
+
+  // componentDidUpdate = () => {
+  //   this.setState ({
+  //     author: this.props.payload.author,
+  //     title: this.props.payload.title,
+  //     notice: this.props.payload.notice,
+  //   })
+  // }
 
   render() {
     return (
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -42,45 +41,54 @@ componentWillUnmount = () =>{
         <View style={styles.modalConteiner}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={this.props.onCancel}>
-              <Text style={{color:'#FFF'}}>Voltar</Text>
+              <Text style={{ color: '#FFF' }}>Voltar</Text>
             </TouchableOpacity>
-            <Text style={{color:'#FFF'}}>{this.state.title}</Text>
+            <Text style={{ color: '#FFF' }}>{this.state.title}</Text>
             <TouchableOpacity onPress={this.save}>
-              <Text style={{color:'#FFF'}}>  </Text>
+              <Text style={{ color: '#FFF' }}>  </Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalBody}>
-            <TextInput 
-              style={{
+            <ScrollView>
+              <TextInput style={{
                 paddingBottom: 0,
+                marginBottom: 0,
                 color: '#FFF',
+                fontSize: 20,
               }}
-              editable={false}
-              placeholder="Autor"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={author => this.setState({ author })}
-              value={this.state.author} />
-            <TextInput style={{
-              paddingBottom: 0,
-              color: '#FFF',
-            }}
-              placeholder="Título"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={title => this.setState({ title })}
-              value={this.state.title} />
-            <TextInput
-              style={{
-                flex: 1,
-                textAlign: 'left',
-                textAlignVertical: 'top',
-                color: '#FFF',
-              }}
-              multiline={true}
-              placeholder="Texto"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={notice => this.setState({ notice })}
-              value={this.state.notice} />
+                editable={false}
+                placeholder="Título"
+                placeholderTextColor={'#5e5f63'}
+                onChangeText={title => this.setState({ title })}
+                value={this.props.payload.title} />
+              <TextInput
+                style={{
+                  paddingTop: 0,
+                  marginTop: 0,
+                  color: '#FFF',
+                }}
+                editable={false}
+                placeholder="Autor"
+                placeholderTextColor={'#5e5f63'}
+                onChangeText={author => this.setState({ author })}
+                value={this.props.payload.author} />
+              <TextInput
+                style={{
+                  flex: 1,
+                  textAlign: 'left',
+                  textAlignVertical: 'top',
+                  color: '#FFF',
+                }}
+                editable={false}
+                multiline={true}
+                placeholder="Texto"
+                placeholderTextColor={'#5e5f63'}
+                onChangeText={notice => this.setState({ notice })}
+                value={this.props.payload.notice} />
+
+            </ScrollView>
+
           </View>
         </View>
       </Modal>

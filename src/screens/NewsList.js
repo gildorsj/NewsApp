@@ -16,6 +16,7 @@ import ViewerNews from './ViewerNews'
 
 
 const initialState = {
+  search: '',
   payload: [],
   news: [],
   addNewsModal: false,
@@ -79,7 +80,17 @@ class NewsList extends Component {
         <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onCancel={() => this.setState({ viewerNewsModal: false })}/>
         <View style={styles.header}>
           <View style={styles.headerBar}>
-            <Text style={{ color: 'white', fontSize: 20 }}>NewsApp</Text>
+          <TextInput 
+            style={{
+              color: '#FFF',
+              fontSize: 20,
+            }}
+            placeholder="Pesquise aqui"
+            placeholderTextColor={'#5e5f63'}
+            onChangeText={search => this.setState({ search })}
+            value={this.state.search} />
+
+         
             <TouchableOpacity
               onPress={() => this.setState({ addNewsModal: true })}>
               <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>+</Text>
@@ -109,12 +120,13 @@ const styles = StyleSheet.create({
   },
   headerBar: {
     flexDirection: 'row',
-    paddingHorizontal: '4%',
+    paddingHorizontal: 10,
     borderRadius: 7,
     backgroundColor: 'grey',
     height: '70%',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    minHeight: 50,
   },
   boby: {
     flex: 0.9,

@@ -42,31 +42,37 @@ class AddNews extends Component {
         <View style={styles.modalConteiner}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={this.props.onCancel}>
-              <Text style={{color:'#FFF'}}>Cancelar</Text>
+              <Text style={{ color: '#FFF' }}>Cancelar</Text>
             </TouchableOpacity>
-            <Text style={{color:'#FFF'}}>Nova notícia</Text>
+            <Text style={{ color: '#FFF' }}>Nova notícia</Text>
             <TouchableOpacity onPress={this.save}>
-              <Text style={{color:'#FFF'}}> Salvar</Text>
+              <Text style={{ color: '#FFF' }}> Salvar</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalBody}>
-            <TextInput style={{
-              paddingBottom: 0,
-              color: '#FFF',
-            }}
-              placeholder="Autor"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={author => this.setState({ author })}
-              value={this.state.author} />
-            <TextInput style={{
-              paddingBottom: 0,
-              color: '#FFF',
-            }}
+
+            <TextInput
+              style={{
+                paddingBottom: 0,
+                marginBottom: 0,
+                color: '#FFF',
+                fontSize: 20,
+              }}
               placeholder="Título"
               placeholderTextColor={'#5e5f63'}
               onChangeText={title => this.setState({ title })}
               value={this.state.title} />
+            <TextInput
+              style={{
+                paddingTop: 0,
+                marginTop: 0,
+                color: '#FFF',
+              }}
+              placeholder="Autor"
+              placeholderTextColor={'#5e5f63'}
+              onChangeText={author => this.setState({ author })}
+              value={this.state.author} />
             <TextInput
               style={{
                 flex: 1,
