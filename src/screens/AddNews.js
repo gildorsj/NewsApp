@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const initialState = {
   author: '',
@@ -33,25 +34,29 @@ class AddNews extends Component {
 
   render() {
     return (
-
       <Modal
-        animationType="slide"
+        animationType='slide'
         transparent={true}
         visible={this.props.isVisible}
         onRequestClose={this.props.onCancel}>
         <View style={styles.modalConteiner}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={this.props.onCancel}>
-              <Text style={{ color: '#FFF' }}>Cancelar</Text>
+              <Icon name='arrow-left' size={20} color='#FFF' />
             </TouchableOpacity>
-            <Text style={{ color: '#FFF' }}>Nova notícia</Text>
+            <Text style={{
+              color: '#FFF',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}>
+              Nova notícia
+            </Text>
             <TouchableOpacity onPress={this.save}>
-              <Text style={{ color: '#FFF' }}> Salvar</Text>
+              <Icon name='save' size={20} color='#FFF' />
             </TouchableOpacity>
           </View>
 
           <View style={styles.modalBody}>
-
             <TextInput
               style={{
                 paddingBottom: 0,
@@ -68,6 +73,7 @@ class AddNews extends Component {
                 paddingTop: 0,
                 marginTop: 0,
                 color: '#FFF',
+                fontStyle: 'italic',
               }}
               placeholder="Autor"
               placeholderTextColor={'#5e5f63'}

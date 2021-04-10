@@ -9,6 +9,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-community/async-storage'
 import News from '../components/News'
 import AddNews from './AddNews'
@@ -85,7 +86,7 @@ class NewsList extends Component {
               color: '#FFF',
               fontSize: 20,
             }}
-            placeholder="Pesquise aqui"
+            placeholder='Pesquise aqui'
             placeholderTextColor={'#5e5f63'}
             onChangeText={search => this.setState({ search })}
             value={this.state.search} />
@@ -93,7 +94,8 @@ class NewsList extends Component {
          
             <TouchableOpacity
               onPress={() => this.setState({ addNewsModal: true })}>
-              <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>+</Text>
+              <Icon name='plus' size={20} color='#FFF' />
+              {/* <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>+</Text> */}
             </TouchableOpacity>
           </View>
         </View>
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flex: 0.1,
-    marginHorizontal: '4%',
+    margin: '3%',
     justifyContent: 'center',
     alignItems: 'stretch',
   },

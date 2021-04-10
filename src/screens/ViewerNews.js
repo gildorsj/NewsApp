@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const initialState = {
   author: '',
@@ -41,11 +42,17 @@ class ViewerNews extends Component {
         <View style={styles.modalConteiner}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={this.props.onCancel}>
-              <Text style={{ color: '#FFF' }}>Voltar</Text>
+              <Icon name='arrow-left' size={20} color='#FFF' />
             </TouchableOpacity>
-            <Text style={{ color: '#FFF' }}>{this.state.title}</Text>
+            <Text style={{
+              color: '#FFF',
+              fontSize: 20,
+              fontWeight: 'bold',
+            }}>
+              {this.props.payload.title}
+            </Text>
             <TouchableOpacity onPress={this.save}>
-              <Text style={{ color: '#FFF' }}>  </Text>
+            <Icon name='edit' size={20} color='#FFF' />
             </TouchableOpacity>
           </View>
 
@@ -67,6 +74,7 @@ class ViewerNews extends Component {
                   paddingTop: 0,
                   marginTop: 0,
                   color: '#FFF',
+                  fontStyle: 'italic',
                 }}
                 editable={false}
                 placeholder="Autor"
