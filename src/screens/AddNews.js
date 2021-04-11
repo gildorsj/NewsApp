@@ -26,6 +26,7 @@ export default function AddNews(props) {
     setAuthor('')
     setNotice('')
     setNotice('')
+    Alert.alert(newNews.title, 'Noticia Salva')
     props.onSave && props.onSave(newNews)
   }
 

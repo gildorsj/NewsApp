@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import commonStyles from '../utils/commonStyles'
@@ -38,6 +39,7 @@ export default function ViewerNews(props) {
 
   const toggleEdit = () => {
     if (editable) {
+      Alert.alert(title, 'Noticia Salva')
       save()
     }
     setEditable(!editable)

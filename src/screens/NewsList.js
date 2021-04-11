@@ -65,7 +65,6 @@ class NewsList extends Component {
       id: Math.random(),
     })
     this.setState({ news, addNewsModal: false, viewerNewsModal: false, }, this.saveOnStorage)
-    Alert.alert(newNews.title, 'Noticia Salva')
   }
 
   confirmDel = id => {
