@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import {
   View,
   Text,
@@ -9,101 +9,94 @@ import {
   Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import commonStyles from '../utils/commonStyles'
 
-const initialState = {
-  author: '',
-  title: '',
-  notice: '',
-}
+export default function AddNews(props) {
 
-class AddNews extends Component {
+  const [author, setAuthor] = useState('')
+  const [title, setTitle] = useState('')
+  const [notice, setNotice] = useState('')
 
-  state = {
-    ...initialState
-  }
-
-
-  save = () => {
+  const save = () => {
     const newNews = {
-      author: this.state.author,
-      title: this.state.title,
-      notice: this.state.notice,
+      author: author,
+      title: title,
+      notice: notice,
     }
-    this.props.onSave && this.props.onSave(newNews)
-    this.setState({ ...initialState })
+    setAuthor('')
+    setNotice('')
+    setNotice('')
+    props.onSave && props.onSave(newNews)
   }
 
-  render() {
-    return (
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={this.props.isVisible}
-        onRequestClose={this.props.onCancel}>
-        <View style={styles.modalConteiner}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={this.props.onCancel}>
-              <Icon name='arrow-left' size={20} color='#FFF' />
-            </TouchableOpacity>
-            <Text style={{
-              color: '#FFF',
-              fontSize: 20,
-              fontWeight: 'bold',
-            }}>
-              Nova notícia
+  return (
+    <Modal
+      animationType='slide'
+      transparent={true}
+      visible={props.isVisible}
+      onRequestClose={props.onCancel}>
+      <View style={styles.modalConteiner}>
+        <View style={styles.modalHeader}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={props.onCancel}>
+            <Icon name='arrow-left' size={20} color={commonStyles.colors.mainText} />
+          </TouchableOpacity>
+          <Text style={styles.pageTitle}>
+            Nova notícia
             </Text>
-            <TouchableOpacity onPress={this.save}>
-              <Icon name='save' size={20} color='#FFF' />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.modalBody}>
-            <TextInput
-              style={{
-                paddingBottom: 0,
-                marginBottom: 0,
-                color: '#FFF',
-                fontSize: 20,
-              }}
-              placeholder="Título"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={title => this.setState({ title })}
-              value={this.state.title} />
-            <TextInput
-              style={{
-                paddingTop: 0,
-                marginTop: 0,
-                color: '#FFF',
-                fontStyle: 'italic',
-              }}
-              placeholder="Autor"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={author => this.setState({ author })}
-              value={this.state.author} />
-            <TextInput
-              style={{
-                flex: 1,
-                textAlign: 'left',
-                textAlignVertical: 'top',
-                color: '#FFF',
-              }}
-              multiline={true}
-              placeholder="Texto"
-              placeholderTextColor={'#5e5f63'}
-              onChangeText={notice => this.setState({ notice })}
-              value={this.state.notice} />
-          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={save}>
+            <Icon name='save' size={20} color={commonStyles.colors.mainText} />
+          </TouchableOpacity>
         </View>
-      </Modal>
-    )
-  }
+
+        <View style={{flex: 0.95}}>
+          <TextInput
+            style={{
+              paddingBottom: 0,
+              marginBottom: 0,
+              color: commonStyles.colors.mainText,
+              fontSize: 20,
+            }}
+            placeholder="Título"
+            placeholderTextColor={commonStyles.colors.placeHolder}
+            onChangeText={title => setTitle(title)}
+            value={title} />
+          <TextInput
+            style={{
+              paddingTop: 0,
+              marginTop: 0,
+              color: commonStyles.colors.mainText,
+              fontStyle: 'italic',
+            }}
+            placeholder="Autor"
+            placeholderTextColor={commonStyles.colors.placeHolder}
+            onChangeText={author => setAuthor(author)}
+            value={author} />
+          <TextInput
+            style={{
+              flex: 1,
+              textAlign: 'left',
+              textAlignVertical: 'top',
+              color: commonStyles.colors.mainText,
+            }}
+            multiline={true}
+            placeholder="Texto"
+            placeholderTextColor={commonStyles.colors.placeHolder}
+            onChangeText={notice => setNotice(notice)}
+            value={notice} />
+        </View>
+      </View>
+    </Modal>
+  )
 }
 
 const styles = StyleSheet.create({
-
   modalConteiner: {
     flex: 1,
-    backgroundColor: '#202125',
+    backgroundColor: commonStyles.colors.background,
     padding: '4%',
   },
   modalHeader: {
@@ -112,11 +105,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: 30,
+    paddingHorizontal: '1%',
   },
-  modalBody: {
-    flex: 0.95,
-    paddingVertical: '4%'
+  button:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '70%',
+    width: '14%',
+    borderRadius: 40,
+    backgroundColor: commonStyles.colors.opacityBackgroundColor,
+  },
+  pageTitle:{
+    color: commonStyles.colors.mainText,
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 })
-
-export default AddNews

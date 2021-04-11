@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native'
+import commonStyles from '../utils/commonStyles'
 
 export default props => {
   return (
@@ -23,10 +24,10 @@ export default props => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    borderColor: '#5e5f63',
+    borderColor: commonStyles.colors.borderLineColor,
     borderWidth: 1,
     alignItems: 'center',
-    backgroundColor: '#202125',
+    backgroundColor: commonStyles.colors.cardBackgroundColor,
     padding: '2.5%',
     marginHorizontal: '3%',
     marginBottom: '5%',
@@ -36,16 +37,16 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: commonStyles.colors.mainText,
 
   },
   author: {
     fontSize: 12,
     fontStyle: 'italic',
-    color: '#FFF',
+    color: commonStyles.colors.mainText,
   },
   notice: {
     fontSize: 12,
-    color: '#FFF',
+    color: commonStyles.colors.mainText,
   },
 })
