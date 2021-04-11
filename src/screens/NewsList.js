@@ -39,9 +39,11 @@ class NewsList extends Component {
   saveOnStorage = () => {
     AsyncStorage.setItem('newsState', JSON.stringify(this.state))
   }
-  
+
   openNews = payload => {
-    this.setState({ payload,  viewerNewsModal: true })
+    this.setState({ payload }, this.setState({viewerNewsModal: true}))
+    // const news = this.state.news.filter(news => news.id !== payload.id)
+    // this.setState({ news }, this.saveOnStorage)
   }
 
   addNews = newNews => {
@@ -64,7 +66,7 @@ class NewsList extends Component {
       notice: newNews.notice,
       id: Math.random(),
     })
-    this.setState({ news, addNewsModal: false, }, this.saveOnStorage)
+    this.setState({ news, addNewsModal: false, viewerNewsModal: false, }, this.saveOnStorage)
   }
 
   delNews = id => {
@@ -72,37 +74,45 @@ class NewsList extends Component {
     this.setState({ news }, this.saveOnStorage)
   }
 
-
+  searchNews = newsList => {
+    return newsList.filter(
+      (listItem) => 
+        listItem.notice.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()) ||
+        listItem.author.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()) ||
+        listItem.title.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()),
+    )
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <AddNews isVisible={this.state.addNewsModal} onCancel={() => this.setState({ addNewsModal: false })} onSave={this.addNews} />
-        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onCancel={() => this.setState({ viewerNewsModal: false })}/>
+        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onCancel={() => this.setState({ viewerNewsModal: false })} onSave={this.addNews} />
         <View style={styles.header}>
           <View style={styles.headerBar}>
-          <TextInput 
-            style={{
-              color: '#FFF',
-              fontSize: 20,
-            }}
-            placeholder='Pesquise aqui'
-            placeholderTextColor={'#5e5f63'}
-            onChangeText={search => this.setState({ search })}
-            value={this.state.search} />
-
-         
+            <TextInput
+              style={{
+                color: '#FFF',
+                fontSize: 20,
+              }}
+              placeholder='Pesquise aqui'
+              placeholderTextColor={'#5e5f63'}
+              onChangeText={search => this.setState({ search })}
+              value={this.state.search} />
             <TouchableOpacity
               onPress={() => this.setState({ addNewsModal: true })}>
               <Icon name='plus' size={20} color='#FFF' />
-              {/* <Text style={{color: 'white', fontWeight: 'bold', fontSize: 20}}>+</Text> */}
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.boby}>
-          <FlatList data={this.state.news}
+          {/* <FlatList data={this.state.news}
             keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => <News {...item} onLongPress={()=> {Alert.alert('Notícia excluída', item.title);this.delNews(item.id)}} onPress={ () => this.openNews(item) }/>} />
+            renderItem={({ item }) => <News {...item} onLongPress={() => { Alert.alert('Notícia excluída', item.title); this.delNews(item.id) }} onPress={() => this.openNews(item)} />} /> */}
+          {/* <Text style={{color: '#FFF'}}>......................</Text> */}
+          {this.searchNews(this.state.news).map((filtedItem, index) => ( 
+            <News key={index} {...filtedItem} onPress={() => this.openNews(filtedItem)} onLongPress={() => this.delNews(filtedItem.id)} />
+          ))}
         </View>
       </View>
     )

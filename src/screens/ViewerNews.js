@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -7,101 +7,112 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-const initialState = {
-  author: '',
-  title: '',
-  notice: '',
-}
 
-class ViewerNews extends Component {
+export default function ViewerNews(props) {
 
-  state = {
-    ...initialState
+  const [author, setAuthor] = useState('')
+  const [title, setTitle] = useState('')
+  const [notice, setNotice] = useState('')
+  const [editable, setEditable] = useState(false)
+
+
+  useEffect(() => {
+    setAuthor(props.payload.author);
+    setTitle(props.payload.title);
+    setNotice(props.payload.notice);
+  }, [props.payload]);
+
+
+  const save = () => {
+    const newNews = {
+      author: author,
+      title: title,
+      notice: notice,
+    }
+    props.onSave && props.onSave(newNews)
+  }
+
+  const toggleEdit = () => {
+    if(editable){
+      save
+      Alert.alert('Noticia Salva',title)
+    }
+    setEditable (!editable)
   }
 
 
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={props.isVisible}
+      onRequestClose={props.onCancel}>
+      <View style={styles.modalConteiner}>
+        <View style={styles.modalHeader}>
+          <TouchableOpacity onPress={props.onCancel}>
+            <Icon name='arrow-left' size={20} color='#FFF' />
+          </TouchableOpacity>
+          <Text style={{
+            color: '#FFF',
+            fontSize: 20,
+            fontWeight: 'bold',
+          }}>
+            {title}
+          </Text>
+          <TouchableOpacity onPress={toggleEdit}>
+            {editable ? <Icon name='save' size={20} color='#FFF' /> : <Icon name='edit' size={20} color='#FFF' />}
 
-  // componentDidUpdate = () => {
-  //   this.setState ({
-  //     author: this.props.payload.author,
-  //     title: this.props.payload.title,
-  //     notice: this.props.payload.notice,
-  //   })
-  // }
 
-  render() {
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.props.isVisible}
-        onRequestClose={this.props.onCancel}>
-        <View style={styles.modalConteiner}>
-          <View style={styles.modalHeader}>
-            <TouchableOpacity onPress={this.props.onCancel}>
-              <Icon name='arrow-left' size={20} color='#FFF' />
-            </TouchableOpacity>
-            <Text style={{
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.modalBody}>
+          <ScrollView>
+            <TextInput style={{
+              paddingBottom: 0,
+              marginBottom: 0,
               color: '#FFF',
               fontSize: 20,
-              fontWeight: 'bold',
-            }}>
-              {this.props.payload.title}
-            </Text>
-            <TouchableOpacity onPress={this.save}>
-            <Icon name='edit' size={20} color='#FFF' />
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.modalBody}>
-            <ScrollView>
-              <TextInput style={{
-                paddingBottom: 0,
-                marginBottom: 0,
+            }}
+              editable={editable}
+              placeholder="Título"
+              placeholderTextColor={'#5e5f63'}
+              onChangeText={title =>setTitle( title )}
+              value={title} />
+            <TextInput
+              style={{
+                paddingTop: 0,
+                marginTop: 0,
                 color: '#FFF',
-                fontSize: 20,
+                fontStyle: 'italic',
               }}
-                editable={false}
-                placeholder="Título"
-                placeholderTextColor={'#5e5f63'}
-                onChangeText={title => this.setState({ title })}
-                value={this.props.payload.title} />
-              <TextInput
-                style={{
-                  paddingTop: 0,
-                  marginTop: 0,
-                  color: '#FFF',
-                  fontStyle: 'italic',
-                }}
-                editable={false}
-                placeholder="Autor"
-                placeholderTextColor={'#5e5f63'}
-                onChangeText={author => this.setState({ author })}
-                value={this.props.payload.author} />
-              <TextInput
-                style={{
-                  flex: 1,
-                  textAlign: 'left',
-                  textAlignVertical: 'top',
-                  color: '#FFF',
-                }}
-                editable={false}
-                multiline={true}
-                placeholder="Texto"
-                placeholderTextColor={'#5e5f63'}
-                onChangeText={notice => this.setState({ notice })}
-                value={this.props.payload.notice} />
-
-            </ScrollView>
-
-          </View>
+              editable={editable}
+              placeholder="Autor"
+              placeholderTextColor={'#5e5f63'}
+              onChangeText={author => setAuthor( author )}
+              value={author} />
+            <TextInput
+              style={{
+                flex: 1,
+                textAlign: 'left',
+                textAlignVertical: 'top',
+                color: '#FFF',
+              }}
+              editable={editable}
+              multiline={true}
+              placeholder="Texto"
+              placeholderTextColor={'#5e5f63'}
+              onChangeText={notice => setNotice( notice )}
+              value={notice} />
+          </ScrollView>
         </View>
-      </Modal>
-    )
-  }
+      </View>
+    </Modal>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -124,4 +135,3 @@ const styles = StyleSheet.create({
   },
 })
 
-export default ViewerNews
