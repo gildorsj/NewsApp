@@ -34,7 +34,6 @@ export default function ViewerNews(props) {
       notice: notice,
     }
     props.onBack && props.onBack(newNews)
-    Alert.alert(title,'Noticia Salva')
   }
 
   const toggleEdit = () => {
@@ -64,9 +63,7 @@ export default function ViewerNews(props) {
             {title}
           </Text>
           <TouchableOpacity onPress={toggleEdit}>
-            {editable ? <Icon name='save' size={20} color='#FFF' /> : <Icon name='edit' size={20} color='#FFF' />}
-
-
+            {editable ? <Icon name='save' size={20} color='#FFF' /> : <Icon name='keyboard-o' size={20} color='#FFF' />}
           </TouchableOpacity>
         </View>
 

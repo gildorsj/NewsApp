@@ -31,7 +31,6 @@ class AddNews extends Component {
     }
     this.props.onSave && this.props.onSave(newNews)
     this.setState({ ...initialState })
-    Alert.alert(this.state.title,'Noticia Salva')
   }
 
   render() {

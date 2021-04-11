@@ -23,6 +23,8 @@ const initialState = {
   news: [],
   addNewsModal: false,
   viewerNewsModal: false,
+  isDark: true,
+  isDeleting: false,
 }
 
 class NewsList extends Component {
@@ -43,8 +45,6 @@ class NewsList extends Component {
 
   openNews = payload => {
     this.setState({ payload }, this.setState({ viewerNewsModal: true }))
-    // const news = this.state.news.filter(news => news.id !== payload.id)
-    // this.setState({ news }, this.saveOnStorage)
     this.delNews(payload.id)
   }
 
@@ -73,9 +73,28 @@ class NewsList extends Component {
       id: Math.random(),
     })
     this.setState({ news, addNewsModal: false, viewerNewsModal: false, }, this.saveOnStorage)
+    Alert.alert(newNews.title, 'Noticia Salva')
   }
 
   delNews = id => {
+
+    Alert.alert(
+      "Alert Title",
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => Alert.alert("Cancel Pressed"),
+          style: "cancel",
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert(
+            "This alert was dismissed by tapping outside of the alert dialog."
+          ),
+      });
     const news = this.state.news.filter(news => news.id !== id)
     this.setState({ news }, this.saveOnStorage)
   }
@@ -91,33 +110,67 @@ class NewsList extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <AddNews isVisible={this.state.addNewsModal} onCancel={() => this.setState({ addNewsModal: false })} onSave={this.addNews} />
-        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onBack={this.addNews} />
+      <View style={this.state.isDark ? styles.darkContainer : styles.lightContainer}>
+        <AddNews
+          isVisible={this.state.addNewsModal}
+          onCancel={() => this.setState({ addNewsModal: false })}
+          onSave={this.addNews} />
+        <ViewerNews
+          isVisible={this.state.viewerNewsModal}
+          payload={this.state.payload}
+          onBack={this.addNews} />
         <View style={styles.header}>
           <View style={styles.headerBar}>
             <TextInput
               style={{
                 color: '#FFF',
                 fontSize: 20,
+                borderRadius: 7,
+                padding: 2,
+                margin: 2,
+                flex: 0.6,
               }}
-              placeholder='Pesquise aqui'
-              placeholderTextColor={'#5e5f63'}
+              placeholder='Pesquisar...'
+              placeholderTextColor={'#949599'}
               onChangeText={search => this.setState({ search })}
               value={this.state.search} />
             <TouchableOpacity
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 0.1,
+              }}
               onPress={() => this.setState({ addNewsModal: true })}>
               <Icon name='plus' size={20} color='#FFF' />
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 0.1,
+              }}
+              onPress={() => this.setState({ isDeleting: !this.state.isDeleting })}>
+              {this.state.isDeleting ? <Icon name='trash-o' size={20} color='#FFF' /> : <Icon name='trash' size={20} color='#FFF' />}
+            </TouchableOpacity> */}
+            <TouchableOpacity
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                flex: 0.1,
+              }}
+              onPress={() => this.setState({ isDark: !this.state.isDark })}>
+              {this.state.isDark ? <Icon name='moon-o' size={20} color='#FFF' /> : <Icon name='sun-o' size={20} color='#FFF' />}
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.boby}>
-          {/* <FlatList data={this.state.news}
-            keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => <News {...item} onLongPress={() => this.delNews(item.id)} onPress={() => this.openNews(item)} />} /> */}
           <ScrollView>
             {this.searchNews(this.state.news).map((filtedItem, index) => (
-              <News key={filtedItem.id} {...filtedItem} onPress={() => this.openNews(filtedItem)} onLongPress={() => this.delNews(filtedItem.id)} />
+              <News
+                key={filtedItem.id}
+                {...filtedItem}
+                onPress={() => this.openNews(filtedItem)}
+                onLongPress={() => this.delNews(filtedItem.id)} />
             ))}
           </ScrollView>
         </View>
@@ -127,7 +180,11 @@ class NewsList extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  lightContainer: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
+  darkContainer: {
     flex: 1,
     backgroundColor: '#202125',
   },
@@ -141,24 +198,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 10,
     borderRadius: 7,
-    backgroundColor: 'grey',
+    backgroundColor: '#2e2f33',
     height: '70%',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     minHeight: 50,
   },
   boby: {
     flex: 0.9,
-  },
-  modalConteiner: {
-    flex: 1,
-    backgroundColor: '#FFF'
-  },
-  modalHeader: {
-
-  },
-  modalInput: {
-
   },
 })
 
