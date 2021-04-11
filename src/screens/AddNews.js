@@ -6,6 +6,7 @@ import {
   Modal,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -30,6 +31,7 @@ class AddNews extends Component {
     }
     this.props.onSave && this.props.onSave(newNews)
     this.setState({ ...initialState })
+    Alert.alert(this.state.title,'Noticia Salva')
   }
 
   render() {

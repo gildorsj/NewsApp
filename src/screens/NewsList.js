@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  ScrollView,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -41,9 +42,14 @@ class NewsList extends Component {
   }
 
   openNews = payload => {
-    this.setState({ payload }, this.setState({viewerNewsModal: true}))
+    this.setState({ payload }, this.setState({ viewerNewsModal: true }))
     // const news = this.state.news.filter(news => news.id !== payload.id)
     // this.setState({ news }, this.saveOnStorage)
+    this.delNews(payload.id)
+  }
+
+  closeNews = payload => {
+
   }
 
   addNews = newNews => {
@@ -76,7 +82,7 @@ class NewsList extends Component {
 
   searchNews = newsList => {
     return newsList.filter(
-      (listItem) => 
+      (listItem) =>
         listItem.notice.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()) ||
         listItem.author.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()) ||
         listItem.title.toLowerCase().includes(this.state.search.toLocaleLowerCase().trim()),
@@ -87,7 +93,7 @@ class NewsList extends Component {
     return (
       <View style={styles.container}>
         <AddNews isVisible={this.state.addNewsModal} onCancel={() => this.setState({ addNewsModal: false })} onSave={this.addNews} />
-        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onCancel={() => this.setState({ viewerNewsModal: false })} onSave={this.addNews} />
+        <ViewerNews isVisible={this.state.viewerNewsModal} payload={this.state.payload} onBack={this.addNews} />
         <View style={styles.header}>
           <View style={styles.headerBar}>
             <TextInput
@@ -108,11 +114,12 @@ class NewsList extends Component {
         <View style={styles.boby}>
           {/* <FlatList data={this.state.news}
             keyExtractor={item => `${item.id}`}
-            renderItem={({ item }) => <News {...item} onLongPress={() => { Alert.alert('Notícia excluída', item.title); this.delNews(item.id) }} onPress={() => this.openNews(item)} />} /> */}
-          {/* <Text style={{color: '#FFF'}}>......................</Text> */}
-          {this.searchNews(this.state.news).map((filtedItem, index) => ( 
-            <News key={index} {...filtedItem} onPress={() => this.openNews(filtedItem)} onLongPress={() => this.delNews(filtedItem.id)} />
-          ))}
+            renderItem={({ item }) => <News {...item} onLongPress={() => this.delNews(item.id)} onPress={() => this.openNews(item)} />} /> */}
+          <ScrollView>
+            {this.searchNews(this.state.news).map((filtedItem, index) => (
+              <News key={filtedItem.id} {...filtedItem} onPress={() => this.openNews(filtedItem)} onLongPress={() => this.delNews(filtedItem.id)} />
+            ))}
+          </ScrollView>
         </View>
       </View>
     )

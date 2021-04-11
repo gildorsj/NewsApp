@@ -33,13 +33,13 @@ export default function ViewerNews(props) {
       title: title,
       notice: notice,
     }
-    props.onSave && props.onSave(newNews)
+    props.onBack && props.onBack(newNews)
+    Alert.alert(title,'Noticia Salva')
   }
 
   const toggleEdit = () => {
     if(editable){
-      save
-      Alert.alert('Noticia Salva',title)
+      save()
     }
     setEditable (!editable)
   }
@@ -53,7 +53,7 @@ export default function ViewerNews(props) {
       onRequestClose={props.onCancel}>
       <View style={styles.modalConteiner}>
         <View style={styles.modalHeader}>
-          <TouchableOpacity onPress={props.onCancel}>
+          <TouchableOpacity onPress={() => props.onBack(props.payload) }>
             <Icon name='arrow-left' size={20} color='#FFF' />
           </TouchableOpacity>
           <Text style={{
