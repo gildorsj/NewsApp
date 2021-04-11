@@ -39,7 +39,7 @@ export default function ViewerNews(props) {
 
   const toggleEdit = () => {
     if (editable) {
-      Alert.alert(title, 'Noticia Salva')
+      Alert.alert(title, 'Notícia salva.')
       save()
     }
     setEditable(!editable)
