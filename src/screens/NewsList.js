@@ -21,7 +21,8 @@ const initialState = {
   news: [],
   addNewsModal: false,
   viewerNewsModal: false,
-  demonstration: true
+  demonstration: true,
+  repetDemonstration: true,
 }
 
 class NewsList extends Component {
@@ -34,6 +35,9 @@ class NewsList extends Component {
     const stateString = await AsyncStorage.getItem('newsState')
     const state = JSON.parse(stateString) || initialState
     this.setState(state)
+
+    if (state.repetDemonstration)
+      this.setState({ demonstration: true })
   }
 
   saveOnStorage = () => {
@@ -44,6 +48,16 @@ class NewsList extends Component {
     this.setState({ payload }, this.setState({ viewerNewsModal: true }))
     this.delNews(payload.id)
   }
+
+  closeDemonstration = notRepet => {
+    if (notRepet)
+      this.setState({ repetDemonstration: false, demonstration: false }, this.saveOnStorage)
+    else
+      this.setState({ repetDemonstration: true, demonstration: false }, this.saveOnStorage)
+
+    
+  }
+
 
   addNews = newNews => {
     if (!newNews.author || !newNews.author.trim()) {
@@ -74,7 +88,7 @@ class NewsList extends Component {
       "Confirmar exclusão?",
       [{
         text: "Cancelar",
-        onPress: () => {},
+        onPress: () => { },
         style: 'cancel'
       }, {
         text: "Confirmar",
@@ -108,25 +122,26 @@ class NewsList extends Component {
           isVisible={this.state.viewerNewsModal}
           payload={this.state.payload}
           onBack={this.addNews} />
-        <Demonstration 
-          isVisible={this.state.demonstration} 
-          onCancel={()=>this.setState({ demonstration: false })}/>
+        <Demonstration
+          isVisible={this.state.demonstration}
+          onClose={this.closeDemonstration}
+          onCancel={() => this.setState({ demonstration: false })} />
         <View style={styles.header}>
           <View style={styles.headerBar}>
             <TextInput
-              style={ styles.searchBar }
+              style={styles.searchBar}
               placeholder='Pesquisar...'
               placeholderTextColor={commonStyles.colors.placeHolder}
               onChangeText={search => this.setState({ search })}
               value={this.state.search} />
             <TouchableOpacity
-              style={ styles.button }
+              style={styles.button}
               onPress={() => this.setState({ addNewsModal: true })}>
               <Icon name='plus' size={20} color={commonStyles.colors.mainText} />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flex: 0.9}}>
+        <View style={{ flex: 0.9 }}>
           <ScrollView>
             {this.searchNews(this.state.news).map((filtedItem, index) => (
               <News
@@ -172,7 +187,7 @@ const styles = StyleSheet.create({
     flex: 0.8,
     backgroundColor: commonStyles.colors.opacityBackgroundColor,
   },
-  button:{
+  button: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 0.1,
