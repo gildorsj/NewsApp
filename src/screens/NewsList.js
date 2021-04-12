@@ -13,7 +13,7 @@ import News from '../components/News'
 import AddNews from './AddNews'
 import ViewerNews from './ViewerNews'
 import commonStyles from '../utils/commonStyles'
-
+import Demonstration from './Demonstration'
 
 const initialState = {
   search: '',
@@ -21,6 +21,7 @@ const initialState = {
   news: [],
   addNewsModal: false,
   viewerNewsModal: false,
+  demonstration: true
 }
 
 class NewsList extends Component {
@@ -107,6 +108,9 @@ class NewsList extends Component {
           isVisible={this.state.viewerNewsModal}
           payload={this.state.payload}
           onBack={this.addNews} />
+        <Demonstration 
+          isVisible={this.state.demonstration} 
+          onCancel={()=>this.setState({ demonstration: false })}/>
         <View style={styles.header}>
           <View style={styles.headerBar}>
             <TextInput
